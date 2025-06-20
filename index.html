@@ -2,13 +2,15 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="As melhores novidades estão aqui! Norte do Espírito Santo e outras regiões com vídeos atualizados do YouTube." />
   <meta name="keywords" content="espiritosanto, vitoria, vilavelha, videos, youtube, serra, cariacica, novidades" />
   <meta name="author" content="Seu Nome ou Marca" />
   <title>Vídeos Atualizados do YouTube</title>
 
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
@@ -30,6 +32,35 @@
       color: #ffffff;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
       margin-bottom: 40px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #ads {
+      font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-size: 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      color: #333;
+      padding: 40px 20px;
+      margin: 20px auto;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    #ads a {
+      color: #0077cc;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    #ads a:hover {
+      text-decoration: underline;
     }
 
     .video-container {
@@ -37,12 +68,12 @@
       flex-direction: column;
       gap: 30px;
       max-width: 800px;
-      margin: 0 auto;
+      margin: 40px auto 0 auto;
     }
 
     .video {
       position: relative;
-      padding-bottom: 56.25%;
+      padding-bottom: 56.25%; /* 16:9 */
       height: 0;
       overflow: hidden;
       border-radius: 15px;
@@ -75,8 +106,10 @@
       font-size: 0.9em;
       color: #fff;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+      font-family: 'Poppins', sans-serif;
     }
 
+    /* Fixo iframe anúncio */
     #iframe-wrapper {
       position: fixed;
       bottom: 0;
@@ -156,24 +189,18 @@
 
   <h1>🎉 ATUALIZADO 20/06/2025 🎉</h1>
 
-  <div class="video-container">
-    <div class="video">
-      <iframe src="https://www.youtube.com/embed/NDrh6SnHTjY?si=Oia9FQdoNn4hvexg" 
-              title="Vídeo 1"
-              allowfullscreen></iframe>
-    </div>
+  <div id="ads">
+    <a href="https://www.geocredibnk.com.br/" target="_blank" rel="noopener noreferrer">CRÉDITO PESSOAL</a>
+    <br>
+    <br>
+    <a href="https://soulslike.vercel.app/">Detonados FromSoftware – Série Soulslike</a>
+    <br>
+    <br>
+    <a href="https://jogosantigos472302513.wordpress.com/maquinas-vps-temos-todas-as-opcoes-de-maqinas-para-voce/">VPS MELHOR PREÇO</a>
+  </div>
 
-    <div class="video">
-      <iframe src="https://www.youtube.com/embed/DFvAjX39EQQ?si=TB16SQXpQ2t2fG0S" 
-              title="Vídeo 2"
-              allowfullscreen></iframe>
-    </div>
-
-    <div class="video">
-      <iframe src="https://www.youtube.com/embed/fmHHTxS1HBg?si=IwOTxEHLubkVLabQ"  
-              title="Vídeo 3"
-              allowfullscreen></iframe>
-    </div>
+  <div class="video-container" id="video-container">
+    <!-- Vídeos vão carregar aqui -->
   </div>
 
   <div id="iframe-wrapper" role="region" aria-label="Anúncio fixo">
@@ -186,7 +213,61 @@
     </iframe>
   </div>
 
+  <footer>
+    &copy; 2025 - Todos os direitos reservados.
+  </footer>
+
   <script>
+    // Lista de vídeos (apenas IDs do YouTube)
+    const videoList = [
+      "Kv5OK2XRcHk",
+      "L9aL_sedfDw",
+      "mKFQCwyO6k",
+      "pLXAeZAof4o",
+      "GvxLV61E5FI",
+      "ohl1tK-azxw",
+      "lNYi3t4AIn8",
+      "dEQSPYaqFbk",
+      "BZb76PJAc3Q",
+      "rOlji8hr9YI",
+      "abmkaEhyNP0",
+      "JGM0UpQAZWc"
+      
+      // Pode adicionar quantos quiser aqui
+    ];
+
+    const container = document.getElementById("video-container");
+    let loaded = 0;
+    const step = 3; // vídeos carregados a cada rolagem próxima do fim
+
+    function loadVideos() {
+      for (let i = 0; i < step && loaded < videoList.length; i++) {
+        const videoId = videoList[loaded];
+        const videoDiv = document.createElement("div");
+        videoDiv.className = "video";
+        videoDiv.innerHTML = `
+          <iframe 
+            src="https://www.youtube.com/embed/${videoId}" 
+            title="Vídeo ${loaded + 1}" 
+            allowfullscreen
+            loading="lazy"></iframe>
+        `;
+        container.appendChild(videoDiv);
+        loaded++;
+      }
+    }
+
+    // Inicializa carregando os primeiros vídeos
+    loadVideos();
+
+    // Detecta scroll perto do fim da página para carregar mais vídeos
+    window.addEventListener("scroll", () => {
+      if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 500)) {
+        loadVideos();
+      }
+    });
+
+    // Lógica botão fechar anúncio fixo
     setTimeout(() => {
       document.getElementById("close-btn").style.display = "block";
     }, 10000);
@@ -195,10 +276,5 @@
       document.getElementById("iframe-wrapper").style.display = "none";
     });
   </script>
-
-  <footer>
-    &copy; 2025 - Todos os direitos reservados.
-  </footer>
-
 </body>
 </html>
